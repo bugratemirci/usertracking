@@ -5,11 +5,14 @@ from .serializers import UserSerializer, PostSerializer, CommentSerializer, Todo
 from .utils.FolderUtils import FolderUtils
 from .utils.FileUtils import FileUtils
 from rest_framework.decorators import action
-
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+permission_classes = [IsAuthenticated]
 
 class UserViewset(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    
 
     def create(self, request):
         data = request.data
@@ -102,6 +105,14 @@ class PhotoViewset(ModelViewSet):
         photo_serializer.save()
         return Response(photo_serializer.data)
 
+    @action(methods=['GET'], detail=False, url_path='getphotosbyuser')
+    def get_photos_by_user(self, request):
+        user_id = request.query_params.get('user_id')
+        user = User.objects.get(id=user_id)
+        photos = Photo.objects.filter(user=user)
+        serializer = PhotoSerializer(photos, many=True)
+        return Response(serializer.data)
+
 
 class AlbumViewset(ModelViewSet):
     queryset = Album.objects.all()
@@ -127,4 +138,12 @@ class AlbumViewset(ModelViewSet):
         album.photos.add(photo)
         album.save()
         serializer = AlbumSerializer(album)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['GET'], url_path='getalbumsbyuser')
+    def get_albums_by_user(self, request):
+        user_id = request.query_params.get('user_id')
+        user = User.objects.get(id=user_id)
+        albums = Album.objects.filter(user=user)
+        serializer = AlbumSerializer(albums, many=True)
         return Response(serializer.data)
