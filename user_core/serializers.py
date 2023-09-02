@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, Post, Comment, Todo
+from .models import User, Post, Comment, Todo, Photo, Album
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserSerializerForComment(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['name', 'photo_path']
+        fields = ['name', 'profile_photo_path']
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -41,3 +41,25 @@ class TodoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Todo
         fields = '__all__'
+
+
+class PhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Photo
+        fields = '__all__'
+
+
+class AlbumSerializer(serializers.ModelSerializer):
+    photos = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Album
+        fields = '__all__'
+
+    def get_photos(self, obj):
+        try:
+            photo = Photo.objects.filter(album=obj)
+            serializer = PhotoSerializer(photo, many=True)
+            return serializer.data
+        except Photo.DoesNotExist:
+            return None
