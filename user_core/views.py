@@ -19,6 +19,17 @@ class UserViewset(ModelViewSet):
         user_serializer.save()
         return Response(user_serializer.data)
 
+    @action(methods=['PUT'], detail=False, url_path='uploadprofilephoto')
+    def upload_profile_photo(self, request):
+        user_id = request.query_params.get('user_id')
+        file = request.data['file']
+        file_path = FileUtils(file, user_id).moveProfilePhotoToUserFolder()
+        user = User.objects.get(id=user_id)
+        user.profile_photo_path = file_path
+        user.save()
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
+
 
 class PostViewset(ModelViewSet):
     queryset = Post.objects.all()
