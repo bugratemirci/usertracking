@@ -5,14 +5,14 @@ from .serializers import UserSerializer, PostSerializer, CommentSerializer, Todo
 from .utils.FolderUtils import FolderUtils
 from .utils.FileUtils import FileUtils
 from rest_framework.decorators import action
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
-permission_classes = [IsAuthenticated]
+from rest_framework.permissions import AllowAny
+from .utils.Authentication import create_access_token
+from django.contrib.auth.hashers import make_password, check_password
+
 
 class UserViewset(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    
 
     def create(self, request):
         data = request.data
@@ -32,6 +32,27 @@ class UserViewset(ModelViewSet):
         user.save()
         serializer = UserSerializer(user)
         return Response(serializer.data)
+
+    @action(methods=['POST'], detail=False, url_path='login', permission_classes=[AllowAny])
+    def login(self, request):
+        email = request.data['username']
+        password = request.data['password']
+        user = User.objects.get(username=email)
+        if (user.check_password(password)):
+            token = create_access_token(user.id)
+            return Response(token)
+        return Response({'error': 'Invalid email or password'})
+
+    @action(methods=['POST'], detail=False, url_path='register', permission_classes=[AllowAny])
+    def register(self, request):
+        data = request.data
+        user = FolderUtils(data).createUserFolder()
+        hashed_password = make_password(user['password'])
+        user['password'] = hashed_password
+        user_serializer = self.get_serializer(data=user)
+        user_serializer.is_valid(raise_exception=True)
+        user_serializer.save()
+        return Response(user_serializer.data)
 
 
 class PostViewset(ModelViewSet):

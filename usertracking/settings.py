@@ -109,9 +109,14 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+AUTHENTICATION_BACKENDS = [
+    'user_core.middleware.AuthenticationBackend.CustomAuth',
+    'django.contrib.auth.backends.ModelBackend'
+]
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
+        'user_core.middleware.AuthenticationBackend.CustomAuth',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
