@@ -1,11 +1,8 @@
 from django.db import models
-import uuid
-# Create your models here.
 
 
 class BaseModel(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True)
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     class Meta:
         abstract = True
@@ -18,3 +15,23 @@ class User(BaseModel):
     website = models.CharField(max_length=100)
     company = models.JSONField()
     address = models.JSONField()
+    photo_path = models.CharField(max_length=200, null=True, blank=True)
+
+
+class Post(BaseModel):
+    title = models.CharField(max_length=100)
+    body = models.TextField()
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE)
+
+
+class Comment(BaseModel):
+    message = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+
+
+class Todo(BaseModel):
+    title = models.TextField()
+    completed = models.BooleanField(default=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=False)
