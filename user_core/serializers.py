@@ -5,7 +5,8 @@ from .models import User, Post, Comment, Todo, Photo, Album
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ('id', 'name', 'username', 'email', 'phone', 'website', 'company', 'address',
+                  'root_path', 'profile_photo_path')
 
 
 class UserSerializerForComment(serializers.ModelSerializer):
