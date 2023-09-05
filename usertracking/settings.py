@@ -43,12 +43,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'user_core'
+    'user_core',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -76,10 +78,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'usertracking.wsgi.application'
 
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'user_core.middleware.PaginationBackend.CustomPagination',
+    'PAGE_SIZE': 10
+}
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -110,19 +117,19 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 AUTHENTICATION_BACKENDS = [
-    'user_core.middleware.AuthenticationBackend.CustomAuth',
+    'user_core.middleware.AuthenticationBackend.AuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend'
 ]
 
-REST_FRAMEWORK = {
+'''REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'user_core.middleware.AuthenticationBackend.CustomAuth',
+        'user_core.middleware.AuthenticationBackend.AuthenticationBackend',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
 
-}
+}'''
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 

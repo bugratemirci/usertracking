@@ -4,7 +4,7 @@ from rest_framework.authentication import get_authorization_header
 from ..utils.Authentication import decode_access_token
 
 
-class CustomAuth(BaseBackend):
+class AuthenticationBackend(BaseBackend):
     def authenticate(self, request):
         auth = get_authorization_header(request).split()
 
