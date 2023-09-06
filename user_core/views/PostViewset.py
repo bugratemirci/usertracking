@@ -1,4 +1,4 @@
-from ..serializers.PostSerializer import PostSerializer
+from ..serializers.PostSerializer import PostSerializer, PostSerializerWithUser
 from ..models import Post, User
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
@@ -24,6 +24,14 @@ class PostViewset(ModelViewSet):
         post_serializer.save()
         return Response(post_serializer.data)
 
+    def list(self, request, *args, **kwargs):
+        posts = Post.objects.all()
+
+        page = self.paginate_queryset(posts)
+        data = PostSerializerWithUser(page, many=True)
+
+        return self.get_paginated_response(data.data)
+
     @action(detail=False, methods=['GET'], url_path='getpostsbyuser')
     def get_posts_by_user(self, request: Request):
         user_id = request.query_params.get('user_id')
@@ -31,6 +39,6 @@ class PostViewset(ModelViewSet):
         posts = Post.objects.filter(user=user)
 
         page = self.paginate_queryset(posts)
-        data = PostSerializer(page, many=True)
+        data = PostSerializerWithUser(page, many=True)
 
         return self.get_paginated_response(data.data)

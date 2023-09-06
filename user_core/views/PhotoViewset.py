@@ -1,6 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from ..models import User, Photo
+from ..models import User, Photo, Album
 from ..serializers.PhotoSerializer import PhotoSerializer
 
 from ..utils.FileUtils import FileUtils
@@ -34,3 +34,11 @@ class PhotoViewset(ModelViewSet):
         photos = Photo.objects.filter(user=user)
         serializer = PhotoSerializer(photos, many=True)
         return Response(serializer.data)
+
+    @action(methods=['GET'], detail=False, url_path='getphotosbyalbum')
+    def get_photos_by_album(self, request):
+        album_id = request.query_params.get('album_id')
+        album = Album.objects.get(id=album_id)
+        photos = Photo.objects.filter(album=album)
+        photo_serializer = PhotoSerializer(photos, many=True)
+        return Response(photo_serializer.data)
