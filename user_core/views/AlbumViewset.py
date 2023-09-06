@@ -37,5 +37,6 @@ class AlbumViewset(ModelViewSet):
         user_id = request.query_params.get('user_id')
         user = User.objects.get(id=user_id)
         albums = Album.objects.filter(user=user)
-        serializer = AlbumSerializer(albums, many=True)
-        return Response(serializer.data)
+        data = AlbumSerializer(albums, many=True)
+
+        return Response(data.data)

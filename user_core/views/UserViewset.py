@@ -7,7 +7,7 @@ from ..utils.FileUtils import FileUtils
 from ..utils.Authentication import create_access_token
 from django.contrib.auth.hashers import make_password
 from rest_framework.permissions import AllowAny
-
+from django.db.models import Q
 from ..models import User
 
 
@@ -54,3 +54,18 @@ class UserViewset(ModelViewSet):
         user_serializer.is_valid(raise_exception=True)
         user_serializer.save()
         return Response(user_serializer.data)
+
+    @action(methods=['GET'], detail=False, url_path='getuserbyid')
+    def get_user_by_id(self, request):
+        user_id = request.query_params.get('user_id')
+        user = User.objects.get(id=user_id)
+        user_serializer = self.get_serializer(user)
+        return Response(user_serializer.data)
+
+    @action(methods=['GET'], detail=False, url_path='getanotherusers')
+    def get_another_users(self, request):
+        user_id = request.query_params.get('user_id')
+        users = User.objects.filter(~Q(id=user_id))
+        serializer = self.get_serializer(users, many=True)
+
+        return Response(serializer.data)

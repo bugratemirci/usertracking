@@ -1,7 +1,9 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from ..models import Todo
+from ..models import Todo, User
 from ..serializers.TodoSerializer import TodoSerializer
+
+from rest_framework.decorators import action
 
 
 class TodoViewset(ModelViewSet):
@@ -18,3 +20,13 @@ class TodoViewset(ModelViewSet):
         todo_serializer.is_valid(raise_exception=True)
         todo_serializer.save()
         return Response(todo_serializer.data)
+
+    @action(detail=False, methods=['GET'], url_path='gettodosbyuser')
+    def get_todos_by_user(self, request):
+        user_id = request.query_params.get('user_id')
+        user = User.objects.get(id=user_id)
+        todos = Todo.objects.filter(user=user)
+        page = self.paginate_queryset(todos)
+        data = TodoSerializer(page, many=True)
+
+        return self.get_paginated_response(data.data)
