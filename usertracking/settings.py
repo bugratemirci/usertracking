@@ -122,7 +122,7 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend'
 ]
 
-'''REST_FRAMEWORK = {
+REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'user_core.middleware.AuthenticationBackend.AuthenticationBackend',
     ),
@@ -130,7 +130,7 @@ AUTHENTICATION_BACKENDS = [
         'rest_framework.permissions.IsAuthenticated',
     ),
 
-}'''
+}
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
