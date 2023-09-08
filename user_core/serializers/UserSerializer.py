@@ -9,6 +9,12 @@ class UserSerializer(serializers.ModelSerializer):
                   'root_path', 'profile_photo_path')
 
 
+class UserSerializerForRegister(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('name', 'username', 'email', 'phone', 'password')
+
+
 class UserSerializerForComment(serializers.ModelSerializer):
     class Meta:
         model = User
