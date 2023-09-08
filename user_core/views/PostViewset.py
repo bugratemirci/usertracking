@@ -6,8 +6,6 @@ from rest_framework.request import Request
 
 from rest_framework.decorators import action
 from ..middleware.PaginationBackend import CustomPagination
-from django.core.paginator import Paginator
-PAGE_SIZE = 20
 
 
 class PostViewset(ModelViewSet):
