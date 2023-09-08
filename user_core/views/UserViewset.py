@@ -1,7 +1,7 @@
 from rest_framework.decorators import action
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from ..serializers.UserSerializer import UserSerializer
+from ..serializers.UserSerializer import UserSerializer, UserSerializerForRegister
 from ..utils.FolderUtils import FolderUtils
 from ..utils.FileUtils import FileUtils
 from ..utils.Authentication import create_access_token
@@ -9,12 +9,17 @@ from django.contrib.auth.hashers import make_password
 from rest_framework.permissions import AllowAny
 from django.db.models import Q
 from ..models import User
+from drf_yasg.utils import swagger_auto_schema, no_body, status
+from drf_yasg import openapi
 
 
 class UserViewset(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+    @swagger_auto_schema(
+        auto_schema=None
+    )
     def create(self, request):
         data = request.data
         user = FolderUtils(data).createUserFolder()
@@ -23,6 +28,15 @@ class UserViewset(ModelViewSet):
         user_serializer.save()
         return Response(user_serializer.data)
 
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter('user_id', openapi.IN_QUERY,
+                              description="User ID", type=openapi.TYPE_STRING, required=True),
+            openapi.Parameter('file', openapi.IN_QUERY,
+                              description="Photo", type=openapi.TYPE_FILE, required=True)
+        ],
+        request_body=no_body
+    )
     @action(methods=['PUT'], detail=False, url_path='uploadprofilephoto')
     def upload_profile_photo(self, request):
         user_id = request.query_params.get('user_id')
@@ -34,6 +48,15 @@ class UserViewset(ModelViewSet):
         serializer = UserSerializer(user)
         return Response(serializer.data)
 
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter('username', openapi.IN_QUERY,
+                              description="Username", type=openapi.TYPE_STRING, required=True),
+            openapi.Parameter('password', openapi.IN_QUERY,
+                              description="Password", type=openapi.TYPE_STRING, required=True)
+        ],
+        request_body=no_body
+    )
     @action(methods=['POST'], detail=False, url_path='login', permission_classes=[AllowAny])
     def login(self, request):
         email = request.data['username']
@@ -44,6 +67,10 @@ class UserViewset(ModelViewSet):
             return Response(token)
         return Response({'error': 'Invalid email or password'})
 
+    @swagger_auto_schema(
+        request_body=UserSerializerForRegister,
+        responses={status.HTTP_200_OK: UserSerializer},
+    )
     @action(methods=['POST'], detail=False, url_path='register', permission_classes=[AllowAny])
     def register(self, request):
         data = request.data
@@ -55,13 +82,13 @@ class UserViewset(ModelViewSet):
         user_serializer.save()
         return Response(user_serializer.data)
 
-    @action(methods=['GET'], detail=False, url_path='getuserbyid')
-    def get_user_by_id(self, request):
-        user_id = request.query_params.get('user_id')
-        user = User.objects.get(id=user_id)
-        user_serializer = self.get_serializer(user)
-        return Response(user_serializer.data)
-
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter('user_id', openapi.IN_QUERY,
+                              description="User ID", type=openapi.TYPE_STRING, required=True)
+        ],
+        request_body=no_body
+    )
     @action(methods=['GET'], detail=False, url_path='getanotherusers')
     def get_another_users(self, request):
         user_id = request.query_params.get('user_id')
