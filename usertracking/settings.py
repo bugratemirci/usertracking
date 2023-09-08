@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'user_core',
     'config',
     'corsheaders',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -82,6 +83,14 @@ WSGI_APPLICATION = 'usertracking.wsgi.application'
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
+SWAGGER_SETTINGS = {
+    "DEFAULT_PAGINATOR_INSPECTORS": [
+        'user_core.middleware.PaginationInspector.PageNumberPaginatorInspectorClass',
+        'drf_yasg.inspectors.DjangoRestResponsePagination',
+        'drf_yasg.inspectors.CoreAPICompatInspector',
+    ]
+}
+
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 REST_FRAMEWORK = {
@@ -117,11 +126,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-AUTHENTICATION_BACKENDS = [
-    'user_core.middleware.AuthenticationBackend.AuthenticationBackend',
-    'django.contrib.auth.backends.ModelBackend'
-]
-
+'''
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'user_core.middleware.AuthenticationBackend.AuthenticationBackend',
@@ -131,6 +136,13 @@ REST_FRAMEWORK = {
     ),
 
 }
+'''
+AUTHENTICATION_BACKENDS = [
+    'user_core.middleware.AuthenticationBackend.AuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend'
+]
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
