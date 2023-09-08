@@ -39,7 +39,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=80, unique=True)
     email = models.EmailField(max_length=100, unique=True)
     phone = models.CharField(max_length=30)
-    website = models.CharField(max_length=100)
+    website = models.CharField(max_length=100, null=True, blank=True)
     company = models.JSONField(null=True, blank=True)
     address = models.JSONField(null=True, blank=True)
     root_path = models.CharField(max_length=200)
