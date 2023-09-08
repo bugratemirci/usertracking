@@ -16,11 +16,10 @@ class CustomPagination(pagination.PageNumberPagination):
             self.page_size = int(self.request.query_params.get('page_size'))
 
         return Response({
-            'next': self.get_next_link(),
-            'previous': self.get_previous_link(),
             'count': self.page.paginator.count,
             'results': data,
             'page_size': self.page_size,
             'total_pages': self.page.paginator.num_pages,
             'current_page': self.page.number
         })
+    
