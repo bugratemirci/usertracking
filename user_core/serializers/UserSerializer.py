@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserSerializerForRegister(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('name', 'username', 'email', 'phone', 'password')
+        fields = ('name', 'username', 'email', 'phone', 'password', 'root_path')
 
 
 class UserSerializerForComment(serializers.ModelSerializer):
