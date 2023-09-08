@@ -95,7 +95,8 @@ SWAGGER_SETTINGS = {
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'user_core.middleware.PaginationBackend.CustomPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+    'EXCEPTION_HANDLER': 'user_core.utils.ErrorHandler.ExceptionHandler'
 }
 DATABASES = {
     'default': {
@@ -126,7 +127,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-'''
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'user_core.middleware.AuthenticationBackend.AuthenticationBackend',
@@ -136,7 +137,7 @@ REST_FRAMEWORK = {
     ),
 
 }
-'''
+
 AUTHENTICATION_BACKENDS = [
     'user_core.middleware.AuthenticationBackend.AuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend'
