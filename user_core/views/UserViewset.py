@@ -10,6 +10,7 @@ from rest_framework.permissions import AllowAny
 from django.db.models import Q
 from ..models import User
 from drf_yasg.utils import swagger_auto_schema, no_body, status
+from ..middleware.PaginationBackend import CustomPagination
 from drf_yasg import openapi
 from ..exception.BadRequestException import BadRequestException
 from ..constants.Response import SuccessResponse
@@ -18,6 +19,7 @@ from ..constants.Response import SuccessResponse
 class UserViewset(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    pagination_class = CustomPagination
 
     @swagger_auto_schema(
         auto_schema=None

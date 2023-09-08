@@ -2,6 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from ..models import User, Photo, Album
 from ..serializers.PhotoSerializer import PhotoSerializer
+from ..middleware.PaginationBackend import CustomPagination
 
 from ..utils.FileUtils import FileUtils
 from rest_framework.decorators import action
@@ -10,6 +11,7 @@ from rest_framework.decorators import action
 class PhotoViewset(ModelViewSet):
     queryset = Photo.objects.all()
     serializer_class = PhotoSerializer
+    pagination_class = CustomPagination
 
     def create(self, request):
         user_id = request.query_params.get('user_id')

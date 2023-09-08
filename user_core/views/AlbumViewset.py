@@ -2,6 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from ..models import User, Photo, Album
 from ..serializers.AlbumSerializer import AlbumSerializer
+from ..middleware.PaginationBackend import CustomPagination
 
 from rest_framework.decorators import action
 
@@ -9,6 +10,7 @@ from rest_framework.decorators import action
 class AlbumViewset(ModelViewSet):
     queryset = Album.objects.all()
     serializer_class = AlbumSerializer
+    pagination_class = CustomPagination
 
     # TODO:If the album's photos remain empty for more than 2 days, the album will be deleted automatically.
 
