@@ -1,6 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from ..models import User, Photo, Album
+from ..models import Photo
 from ..serializers.PhotoSerializer import PhotoSerializer
 from ..middleware.PaginationBackend import CustomPagination
 

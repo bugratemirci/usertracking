@@ -1,6 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from ..models import User, Comment
+from ..models import Comment
 from ..serializers.CommentSerializer import CommentSerializer
 from ..middleware.PaginationBackend import CustomPagination
 from ..service.CommentService import CommentSercice

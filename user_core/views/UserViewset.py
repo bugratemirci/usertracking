@@ -2,7 +2,6 @@ from rest_framework.decorators import action
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
-from django.db.models import Q
 from drf_yasg.utils import swagger_auto_schema, no_body, status
 from drf_yasg import openapi
 

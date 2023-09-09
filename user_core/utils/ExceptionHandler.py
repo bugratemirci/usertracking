@@ -1,8 +1,5 @@
-import logging
-
 from rest_framework.views import exception_handler
 from datetime import datetime
-from ..exception.BadRequestException import BadRequestException
 
 
 def custom_exception_handler(exc, context):

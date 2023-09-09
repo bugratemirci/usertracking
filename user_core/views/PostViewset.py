@@ -1,5 +1,5 @@
 from ..serializers.PostSerializer import PostSerializer
-from ..models import Post, User
+from ..models import Post
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 

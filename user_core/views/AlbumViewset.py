@@ -2,7 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import action
 
-from ..models import User, Photo, Album
+from ..models import Album
 from ..serializers.AlbumSerializer import AlbumSerializer
 from ..middleware.PaginationBackend import CustomPagination
 from ..service.AlbumService import AlbumService
