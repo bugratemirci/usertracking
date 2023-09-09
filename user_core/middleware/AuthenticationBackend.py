@@ -13,7 +13,8 @@ class AuthenticationBackend(BaseBackend):
                         base_url + 'swagger/',
                         base_url + 'swagger/?format=openapi',
                         base_url + 'redoc/',
-                        base_url + 'redoc/?format=openapi']
+                        base_url + 'redoc/?format=openapi',
+                        base_url + 'users/heartbeat/']
         try:
             if len(get_authorization_header(request).split()) == 0 and request.build_absolute_uri() not in allowed_uris:
                 raise BadRequestException("Authorization not found in request")

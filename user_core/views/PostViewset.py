@@ -19,6 +19,10 @@ class PostViewset(ModelViewSet):
     def list(self, request, *args, **kwargs):
         return PostService(None).getAll(self.paginate_queryset, self.get_paginated_response)
 
+    @action(detail=False, methods=['GET'], url_path='getpostswithcomments')
+    def get_posts_with_comments(self, request):
+        return PostService(request=request).getPostsWithComments(self.paginate_queryset, self.get_paginated_response)
+
     @action(detail=False, methods=['GET'], url_path='getpostsbyuser')
     def get_posts_by_user(self, request):
         return PostService(request=request).getAllByUser(self.paginate_queryset, self.get_paginated_response)

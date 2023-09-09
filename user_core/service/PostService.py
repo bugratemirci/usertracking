@@ -35,3 +35,10 @@ class PostService:
         data = PostSerializerWithUser(page, many=True)
 
         return get_paginated_response(data.data)
+
+    def getPostsWithComments(self, paginate_queryset, get_paginated_response):
+        posts = Post.objects.all()
+        page = paginate_queryset(posts)
+        data = PostSerializerWithUser(page, many=True)
+
+        return get_paginated_response(data.data)

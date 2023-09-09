@@ -7,3 +7,12 @@ class SuccessResponse:
 
     def __init__(self, data):
         self.data = data
+
+
+class UserTokenResponse:
+    user = None
+    token = None
+
+    def __init__(self, user, token):
+        self.user = user
+        self.token = token

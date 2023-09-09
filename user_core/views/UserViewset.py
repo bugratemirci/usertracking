@@ -71,3 +71,7 @@ class UserViewset(ModelViewSet):
     @action(methods=['GET'], detail=False, url_path='getanotherusers')
     def get_another_users(self, request):
         return Response(UserService(request=request).getAnotherUser())
+
+    @action(methods=['POST'], detail=False, url_path="heartbeat", permission_classes=[AllowAny])
+    def heartbeat(self, request):
+        return Response(UserService(request=request).heartbeat())

@@ -7,6 +7,8 @@ from ..exception.BadRequestException import BadRequestException
 from ..utils.Authentication import create_access_token
 from ..utils.FolderUtils import FolderUtils
 from ..utils.FileUtils import FileUtils
+from ..utils.Authentication import decode_access_token
+from ..constants.Response import UserTokenResponse
 
 
 class UserService:
@@ -50,12 +52,13 @@ class UserService:
             raise BadRequestException("Username or password can't be empty.")
         try:
             user = User.objects.get(username=username)
+            serializer = UserSerializer(user)
         except User.DoesNotExist as e:
             raise BadRequestException(str(e))
         if (not user.check_password(password)):
             raise BadRequestException('Invalid username or password')
 
-        return create_access_token(user.id)
+        return UserTokenResponse(serializer.data, create_access_token(user.id)).__dict__
 
     def uploadPhoto(self):
         user_id = self.request.query_params.get('user_id', None)
@@ -81,3 +84,13 @@ class UserService:
         serializer = UserSerializer(users, many=True)
 
         return serializer.data
+
+    def heartbeat(self):
+        token = self.request.data.get('token')
+        try:
+            user_id = decode_access_token(token)
+            user = User.objects.get(id=user_id)
+            serializer = UserSerializer(user)
+            return UserTokenResponse(serializer.data, create_access_token(user.id)).__dict__
+        except Exception as e:
+            raise BadRequestException("Token expired!")
