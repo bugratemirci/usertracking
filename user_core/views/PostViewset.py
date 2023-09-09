@@ -1,4 +1,4 @@
-from ..serializers.PostSerializer import PostSerializer, PostSerializerWithUser
+from ..serializers.PostSerializer import PostSerializer
 from ..models import Post, User
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
@@ -6,6 +6,7 @@ from rest_framework.request import Request
 
 from rest_framework.decorators import action
 from ..middleware.PaginationBackend import CustomPagination
+from ..service.PostService import PostService
 
 
 class PostViewset(ModelViewSet):
@@ -14,29 +15,11 @@ class PostViewset(ModelViewSet):
     pagination_class = CustomPagination
 
     def create(self, request):
-        user_id = request.query_params.get('user_id')
-        data = request.data
-        data['user'] = user_id
-        post_serializer = PostSerializer(data=data)
-        post_serializer.is_valid(raise_exception=True)
-        post_serializer.save()
-        return Response(post_serializer.data)
+        return Response(PostService(request).create())
 
     def list(self, request, *args, **kwargs):
-        posts = Post.objects.all()
-
-        page = self.paginate_queryset(posts)
-        data = PostSerializerWithUser(page, many=True)
-
-        return self.get_paginated_response(data.data)
+        return PostService(None).getAll(self.paginate_queryset, self.get_paginated_response)
 
     @action(detail=False, methods=['GET'], url_path='getpostsbyuser')
     def get_posts_by_user(self, request: Request):
-        user_id = request.query_params.get('user_id')
-        user = User.objects.get(id=user_id)
-        posts = Post.objects.filter(user=user)
-
-        page = self.paginate_queryset(posts)
-        data = PostSerializerWithUser(page, many=True)
-
-        return self.get_paginated_response(data.data)
+        return PostService(request=request).getAllByUser(self.paginate_queryset, self.get_paginated_response)
