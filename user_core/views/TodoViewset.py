@@ -7,7 +7,6 @@ from drf_yasg import openapi
 from ..models import Todo
 from ..serializers.TodoSerializer import TodoSerializer
 from ..middleware.PaginationBackend import CustomPagination
-from ..middleware.PaginationBackend import CustomPagination
 from ..service.TodoService import TodoService
 
 
@@ -35,6 +34,7 @@ class TodoViewset(ModelViewSet):
     @action(detail=False, methods=['GET'], url_path='gettodosbyuser')
     def get_todos_by_user(self, request):
         return TodoService(request=request).getTodosByUser(self.paginate_queryset, self.get_paginated_response)
+
     @swagger_auto_schema(
         manual_parameters=[
             openapi.Parameter('todo_id', openapi.IN_QUERY,

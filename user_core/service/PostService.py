@@ -1,4 +1,5 @@
-from ..serializers.PostSerializer import PostSerializer, PostSerializerWithUser
+from ..serializers.PostSerializer import PostSerializer
+from ..serializers.PostSerializerWithUser import PostSerializerWithUser
 from ..models import Post, User
 from ..exception.BadRequestException import BadRequestException
 

@@ -2,7 +2,8 @@ from django.contrib.auth.hashers import make_password
 from django.db.models import Q
 
 from ..models import User
-from ..serializers.UserSerializer import UserSerializer, UserSerializerForRegister
+from ..serializers.UserSerializer import UserSerializer
+from ..serializers.UserSerializerForRegister import UserSerializerForRegister
 from ..exception.BadRequestException import BadRequestException
 from ..utils.Authentication import create_access_token
 from ..utils.FolderUtils import FolderUtils

@@ -6,7 +6,8 @@ from drf_yasg.utils import swagger_auto_schema, no_body, status
 from drf_yasg import openapi
 
 from ..service.UserService import UserService
-from ..serializers.UserSerializer import UserSerializer, UserSerializerForRegister
+from ..serializers.UserSerializer import UserSerializer
+from ..serializers.UserSerializerForRegister import UserSerializerForRegister
 from ..middleware.PaginationBackend import CustomPagination
 from ..models import User
 from django_filters.rest_framework import DjangoFilterBackend
