@@ -2,7 +2,7 @@ from django.contrib.auth.hashers import make_password
 from django.db.models import Q
 
 from ..models import User
-from ..serializers.UserSerializer import UserSerializer
+from ..serializers.UserSerializer import UserSerializer, UserSerializerForRegister
 from ..exception.BadRequestException import BadRequestException
 from ..utils.Authentication import create_access_token
 from ..utils.FolderUtils import FolderUtils
@@ -36,7 +36,7 @@ class UserService:
         user['password'] = hashed_password
 
         try:
-            user_serializer = UserSerializer(data=user)
+            user_serializer = UserSerializerForRegister(data=user)
             user_serializer.is_valid(raise_exception=True)
         except Exception as e:
             raise BadRequestException(str(e))
