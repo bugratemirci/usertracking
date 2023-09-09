@@ -6,17 +6,21 @@ from django.db.models import Q
 from drf_yasg.utils import swagger_auto_schema, no_body, status
 from drf_yasg import openapi
 
-from ..exception.BadRequestException import BadRequestException
 from ..service.UserService import UserService
 from ..serializers.UserSerializer import UserSerializer, UserSerializerForRegister
 from ..middleware.PaginationBackend import CustomPagination
 from ..models import User
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 
 
 class UserViewset(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     pagination_class = CustomPagination
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    filterset_fields = ['username', 'email']
+    search_fields = ['username', 'email']
 
     @swagger_auto_schema(
         auto_schema=None

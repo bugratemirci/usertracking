@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'config',
     'corsheaders',
     'drf_yasg',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -133,7 +134,8 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PAGINATION_CLASS': 'user_core.middleware.PaginationBackend.CustomPagination',
     'PAGE_SIZE': 10,
-    'EXCEPTION_HANDLER': 'user_core.utils.ExceptionHandler.custom_exception_handler'
+    'EXCEPTION_HANDLER': 'user_core.utils.ExceptionHandler.custom_exception_handler',
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 AUTHENTICATION_BACKENDS = [
