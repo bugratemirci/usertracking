@@ -1,11 +1,8 @@
 from rest_framework import status
-from rest_framework.exceptions import APIException
+from .BaseException import BaseCustomException
 
 
-class BadRequestException(APIException):
-    detail = None
+class BadRequestException(BaseCustomException):
     status_code = status.HTTP_400_BAD_REQUEST
-
     def __init__(self, detail):
-        super().__init__(detail)
-        self.detail = detail
+        super().__init__(detail, status.HTTP_400_BAD_REQUEST)

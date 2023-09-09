@@ -93,11 +93,7 @@ SWAGGER_SETTINGS = {
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'user_core.middleware.PaginationBackend.CustomPagination',
-    'PAGE_SIZE': 10,
-    'EXCEPTION_HANDLER': 'user_core.utils.ErrorHandler.ExceptionHandler'
-}
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -135,7 +131,9 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
-
+    'DEFAULT_PAGINATION_CLASS': 'user_core.middleware.PaginationBackend.CustomPagination',
+    'PAGE_SIZE': 10,
+    'EXCEPTION_HANDLER': 'user_core.utils.ExceptionHandler.custom_exception_handler'
 }
 
 AUTHENTICATION_BACKENDS = [
