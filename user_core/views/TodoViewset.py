@@ -1,14 +1,13 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from ..models import Todo, User
-from ..serializers.TodoSerializer import TodoSerializer
-from ..middleware.PaginationBackend import CustomPagination
-
 from rest_framework.decorators import action
 from drf_yasg.utils import swagger_auto_schema, no_body
-from ..middleware.PaginationBackend import CustomPagination
 from drf_yasg import openapi
-from ..exception.BadRequestException import BadRequestException
+
+from ..models import Todo
+from ..serializers.TodoSerializer import TodoSerializer
+from ..middleware.PaginationBackend import CustomPagination
+from ..middleware.PaginationBackend import CustomPagination
 from ..service.TodoService import TodoService
 
 
