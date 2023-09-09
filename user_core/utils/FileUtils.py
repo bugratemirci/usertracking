@@ -1,7 +1,7 @@
 import os
 import environ
 from ..models import User
-
+from ..exception.BadRequestException import BadRequestException
 env = environ.Env()
 environ.Env.read_env()
 
@@ -21,8 +21,8 @@ class FileUtils:
                     destinations.write(chunk)
 
             return os.path.join(self.user.root_path, 'photos_path', self.file.name)
-
-        return None
+        else:
+            raise BadRequestException("File exists.")
 
     def moveProfilePhotoToUserFolder(self):
         file_path = os.path.join(env('USER_ROOT_PATH'),
@@ -33,5 +33,5 @@ class FileUtils:
                 for chunk in self.file.chunks():
                     destinations.write(chunk)
             return os.path.join(self.user.root_path, self.file.name)
-
-        return None
+        else:
+            raise BadRequestException("File exists.")

@@ -1,6 +1,7 @@
 import os
 import environ
 from django.utils import timezone
+from ..exception.BadRequestException import BadRequestException
 env = environ.Env()
 environ.Env.read_env()
 
@@ -22,5 +23,5 @@ class FolderUtils:
             os.mkdir(photos_path)
             self.user['root_path'] = user_folder_name
             return self.user
-        except OSError as error:
-            pass
+        except Exception as error:
+            raise BadRequestException("User root path exists.")
