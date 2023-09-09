@@ -1,4 +1,3 @@
-from rest_framework.response import Response
 from ..models import User
 from ..serializers.CommentSerializer import CommentSerializer
 from ..exception.BadRequestException import BadRequestException
@@ -9,9 +8,10 @@ class CommentSercice:
         self.request = request
 
     def create(self):
-        user_id = self.request.query_params.get('user_id')
-        post_id = self.request.query_params.get('post_id')
-
+        user_id = self.request.query_params.get('user_id', None)
+        post_id = self.request.query_params.get('post_id', None)
+        if (user_id == None or post_id == None):
+            raise BadRequestException("User id or Post id can't be null.")
         data = self.request.data
         data['post'] = post_id
 

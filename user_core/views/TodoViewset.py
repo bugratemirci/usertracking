@@ -35,7 +35,13 @@ class TodoViewset(ModelViewSet):
     @action(detail=False, methods=['GET'], url_path='gettodosbyuser')
     def get_todos_by_user(self, request):
         return TodoService(request=request).getTodosByUser(self.paginate_queryset, self.get_paginated_response)
-
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter('todo_id', openapi.IN_QUERY,
+                              description="Todo ID", type=openapi.TYPE_STRING, required=True),
+        ],
+        request_body=no_body
+    )
     @action(detail=False, methods=['PUT'], url_path='settodotocomplete')
     def set_todo_to_complete(self, request):
         return Response(TodoService(request=request).setTodoToComplete())
