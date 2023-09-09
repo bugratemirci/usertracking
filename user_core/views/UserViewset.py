@@ -65,9 +65,9 @@ class UserViewset(ModelViewSet):
     )
     @action(methods=['POST'], detail=False, url_path='login', permission_classes=[AllowAny])
     def login(self, request):
-        username = request.data.get('username', '')
-        password = request.data.get('password', '')
-        if len(username) == 0 or len(password) == 0:
+        username = request.data.get('username', None)
+        password = request.data.get('password', None)
+        if username == None or password == None:
             raise BadRequestException("Username or password can't be empty.")
 
         user = User.objects.get(username=username)
