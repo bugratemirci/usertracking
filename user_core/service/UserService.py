@@ -69,7 +69,7 @@ class UserService:
         user.save()
         serializer = UserSerializer(user)
 
-        return serializer
+        return serializer.data
 
     def getAnotherUser(self):
         user_id = self.request.query_params.get('user_id', None)
