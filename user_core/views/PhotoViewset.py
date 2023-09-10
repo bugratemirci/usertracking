@@ -23,3 +23,7 @@ class PhotoViewset(ModelViewSet):
     @action(methods=['GET'], detail=False, url_path='getphotosbyalbum')
     def get_photos_by_album(self, request):
         return Response(PhotoService(request=request).getPhotosByAlbum())
+
+    @action(methods=['DELETE'], detail=False, url_path='deletephoto')
+    def delete_photo(self, request):
+        return Response(PhotoService(request=request).deletePhoto())

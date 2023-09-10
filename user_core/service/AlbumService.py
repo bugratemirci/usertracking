@@ -44,3 +44,16 @@ class AlbumService:
         serializer = AlbumSerializer(albums, many=True)
 
         return serializer.data
+
+    def removePhotoFromAlbum(self):
+        photo_id = self.request.query_params.get('photo_id', None)
+        album_id = self.request.query_params.get('album_id', None)
+        if album_id == None or photo_id == None:
+            raise BadRequestException("Album id or Photo id cant't be null.")
+        photo = Photo.objects.get(id=photo_id)
+        album = Album.objects.get(id=album_id)
+        album.photos.remove(photo)
+        album.save()
+        serializer = AlbumSerializer(album)
+
+        return serializer.data

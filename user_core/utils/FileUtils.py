@@ -8,9 +8,10 @@ environ.Env.read_env()
 
 class FileUtils:
     def __init__(self, file, user_id):
-        user = User.objects.get(id=user_id)
-        self.file = file
-        self.user = user
+        if file != -1 and user_id != -1:
+            user = User.objects.get(id=user_id)
+            self.file = file
+            self.user = user
 
     def movePhotoFileToUserFolder(self):
         file_path = os.path.join(env('USER_ROOT_PATH'),
@@ -35,3 +36,9 @@ class FileUtils:
             return os.path.join(self.user.root_path, self.file.name)
         else:
             raise BadRequestException("File exists.")
+
+    def removePhoto(self, photo_path):
+        file_path = env('USER_ROOT_PATH')
+        print(file_path + "/" + photo_path)
+        if (os.path.exists(file_path + "/" + photo_path)):
+            os.remove(file_path + "/" + photo_path)

@@ -58,3 +58,16 @@ class PhotoService:
         photo_serializer = PhotoSerializer(photos, many=True)
 
         return photo_serializer.data
+
+    def deletePhoto(self):
+        photo_id = self.request.query_params.get('photo_id', None)
+        if (photo_id == None):
+            raise BadRequestException(
+                "Please check the data you sent! Required fields: Photo ID")
+
+        photo = Photo.objects.get(id=photo_id)
+        print(photo.url)
+        FileUtils(-1, -1).removePhoto(photo.url)
+        photo.delete()
+
+        return "Photo deleted with id: " + photo_id

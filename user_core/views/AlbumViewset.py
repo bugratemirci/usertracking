@@ -49,3 +49,7 @@ class AlbumViewset(ModelViewSet):
     @action(detail=False, methods=['GET'], url_path='getalbumsbyuser')
     def get_albums_by_user(self, request):
         return Response(AlbumService(request=request).getAlbumsByUser())
+    
+    @action(detail=False, methods=['PUT'], url_path='removephotofromalbum')
+    def remove_photo_from_album(self, request):
+        return Response(AlbumService(request=request).removePhotoFromAlbum())
